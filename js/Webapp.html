@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Infinity Lions vs The Sun</title>
+  <style>
+    body {
+      background: linear-gradient(to top, #ffe259, #ffa751);
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 40px;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+    }
+
+    .battle-scene {
+      font-size: 4rem;
+      margin: 30px 0;
+    }
+
+    .actions button {
+      font-size: 1.3rem;
+      padding: 12px 25px;
+      margin: 10px;
+      background-color: #ff5733;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .actions button:hover {
+      background-color: #c70039;
+    }
+
+    .stats {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+
+    .result {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 30px;
+      color: green;
+      display: none;
+    }
+
+    .sun-attack {
+      font-size: 2rem;
+      color: orange;
+      margin-top: 20px;
+      height: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Infinity Lions 🦁 vs. The Sun ☀️</h1>
+  <div class="battle-scene" id="scene">🦁♾️ vs ☀️</div>
+
+  <div class="actions">
+    <button onclick="lionAction('dodge')">🛡️ Dodge</button>
+    <button onclick="lionAction('attack')">⚔️ Attack</button>
+  </div>
+
+  <div class="sun-attack" id="sunAttack"></div>
+
+  <div class="stats" id="stats">Lion Health: 3 🦁 | Rounds Survived: 0</div>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    let lionHealth = 3;
+    let roundsSurvived = 0;
+    const resultDisplay = document.getElementById('result');
+    const statsDisplay = document.getElementById('stats');
+    const sunAttackDisplay = document.getElementById('sunAttack');
+
+    function lionAction(choice) {
+      if (lionHealth <= 0 || roundsSurvived >= 5) return;
+
+      const sunMove = Math.random() < 0.5 ? 'flare' : 'pause';
+
+      let resultText = '';
+      if (sunMove === 'flare') {
+        sunAttackDisplay.textContent = "☀️ Solar Flare incoming!";
+        if (choice === 'dodge') {
+          if (Math.random() < 0.7) {
+            resultText = "🦁 You dodged the flare!";
+          } else {
+            lionHealth--;
+            resultText = "🔥 You tried to dodge but got hit!";
+          }
+        } else if (choice === 'attack') {
+          lionHealth--;
+          resultText = "🔥 You attacked but got burned!";
+        }
+      } else {
+        sunAttackDisplay.textContent = "☀️ The sun is charging...";
+        if (choice === 'attack') {
+          resultText = "🗡️ You landed a solid hit!";
+        } else {
+          resultText = "🦁 You waited. Smart move.";
+        }
+      }
+
+      roundsSurvived++;
+      statsDisplay.textContent = `Lion Health: ${lionHealth} 🦁 | Rounds Survived: ${roundsSurvived}`;
+
+      if (lionHealth <= 0) {
+        resultDisplay.style.display = 'block';
+        resultDisplay.style.color = 'red';
+        resultDisplay.textContent = "☀️ The sun scorched the lions! Game over.";
+      } else if (roundsSurvived >= 5) {
+        resultDisplay.style.display = 'block';
+        resultDisplay.style.color = 'green';
+        resultDisplay.textContent = "🦁 The lions endured the solar storm and win!";
+      } else {
+        setTimeout(() => {
+          sunAttackDisplay.textContent = '';
+          resultDisplay.style.display = 'block';
+          resultDisplay.style.color = '#333';
+          resultDisplay.textContent = resultText;
+        }, 300);
+      }
+    }
+  </script>
+</body>
+</html>
